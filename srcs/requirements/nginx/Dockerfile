@@ -4,11 +4,12 @@ FROM debian:bullseye
 # Install NGINX, 
 # Create the directory for CSR (Certificate Signing Requests)
 # Clean and remove files dowload by apt-get update that we dont need 
-RUN apt-get update && apt-get install -y nginx \
-mkdir -p /etc/ssl/certs && /etc/ssl/private \
+RUN apt-get update && apt-get install -y nginx && \
+mkdir -p /etc/ssl/certs && \
+mkdir -p /etc/ssl/private && \
 apt-get clean && \
-rm -rf /var/lib/apt/lists/*
-
+rm -rf /var/lib/apt/lists/* && \
+mkdir -p /var/run/nginx 
 
 # Copy NGINX configuration inside of container 
 COPY  ./tools/nginx.conf /etc/nginx/nginx.conf
