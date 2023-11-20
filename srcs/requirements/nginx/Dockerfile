@@ -20,7 +20,6 @@ COPY  ./tools/nginx.conf /etc/nginx/nginx.conf
 # Copy certifications in the container
 COPY ./tools/ssl/certs/inception.crt /etc/ssl/certs/
 COPY ./tools/ssl/private/inception.key /etc/ssl/private/
-#RUN chown www-data:www-data /etc/ssl/private/inception.key && chmod 600 /etc/ssl/private/inception.key
 
 # Expose the port HTTPS
 EXPOSE 443
