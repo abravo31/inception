@@ -1,10 +1,11 @@
-# version oldstable 
+# oldstable version
 FROM debian:bullseye
 
 # Install NGINX, 
 # Create the directory for CSR (Certificate Signing Requests)
 # Clean and remove files dowload by apt-get update that we dont need 
 # Create the dir for PID
+# Create a directory for access.log
 RUN apt-get update && apt-get install -y nginx && \
 mkdir -p /etc/ssl/certs && \
 mkdir -p /etc/ssl/private && \
@@ -12,7 +13,6 @@ apt-get clean && \
 rm -rf /var/lib/apt/lists/* && \
 mkdir -p /var/run/nginx && \
 mkdir -p /usr/share/nginx/logs/ && touch /usr/share/nginx/logs/access.log
-#mkdir -p /var/log/nginx/error.log;
 
 # Copy NGINX configuration inside of container 
 COPY  ./tools/nginx.conf /etc/nginx/nginx.conf
