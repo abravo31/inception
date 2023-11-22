@@ -6,7 +6,7 @@ FROM debian:bullseye
 # Clean and remove files dowload by apt-get update that we dont need 
 # Create the dir for PID
 # Create a directory for access.log
-RUN apt-get update && apt-get install -y nginx && \
+RUN apt-get update && apt-get install -y nginx curl && \
 mkdir -p /etc/ssl/certs && \
 mkdir -p /etc/ssl/private && \
 apt-get clean && \
