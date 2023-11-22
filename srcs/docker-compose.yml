@@ -2,13 +2,24 @@ version: '3.8'
 
 services:
   wordpress:
-    build: ./requirements/wordpress
-    container_name: wordpress
-    depends_on:
-      - mariadb
+    container_name: wordpress_docker
+    image: wordpress
+    build: 
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
+    volumes:
+      - wordpress_data:/var/www/html/
+    env_file:
+      - .env
     ports:
       - "9000"
-    restart: always
+    int : true
+    networks:
+      - inception 
+    depends_on:
+      - mariadb:
+        condition : service_healthy
+    restart: unless-stopped
 
   nginx:
     build: ./requirements/nginx
@@ -23,15 +34,25 @@ services:
 
   mariadb:
     image: mariadb
-    container_name: mariadb
-    environment:
-      MYSQL_ROOT_PASSWORD: motdepasse
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: utilisateur
-      MYSQL_PASSWORD: motdepasse
+    container_name: mariadb_docker
+    build:
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
     volumes:
-      - db_data:/var/lib/mysql
-    restart: always
+      - mariadb_data:/var/lib/mysql
+    expose:
+      -"3306"
+    networks:
+      - inception
+    restart : unless-stopped
+    env_file:
+      - .env
+    healthcheck:
+      test: mysqladmin ping --host=localhost -p${DB_ROOT_PASSWORD}
+      interval: 5s
+      timeout: 1s
+      retries: 20
+      start_period: 5s
 
 volumes:
   db_data:
