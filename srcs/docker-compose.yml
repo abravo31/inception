@@ -10,6 +10,11 @@ services:
       - wordpress_data:/var/www/html/
     env_file:
       - .env
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
     init: true
     networks:
       - inception 
@@ -28,7 +33,7 @@ services:
     ports:
       - "443:443"
     volumes:
-      - wordpress_data:var/www/html
+      - wordpress_data:/var/www/html
     environment:
       - DOMAIN_NAME=abravo.42.fr
       - CERTS=/etc/ssl/certs/inception.ctr
@@ -56,11 +61,16 @@ services:
       - inception
     env_file:
       - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     restart : unless-stopped
     healthcheck:
       test: mysqladmin ping --host=localhost -p${MYSQL_ROOT_PASSWORD}
       interval: 5s
-      timeout: 1s
+      timeout: 10s
       retries: 20
       start_period: 5s
 

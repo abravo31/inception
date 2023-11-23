@@ -4,22 +4,24 @@
 mysqld_safe &
 
 # Attendre que MariaDB soit opérationnelle
-while ! mysqladmin ping -uroot --silent; do
-    sleep 1
+while ! mysqladmin ping --silent; do
+    sleep 4
 done
 
-# Vérifier si la base de données existe et la créer si ce n'est pas le cas
-if ! mysql -uroot -e "USE wordpress_db"; then
-    mysql -uroot -e "CREATE DATABASE wordpress_db;"
-fi
+# Créer la base de données si elle n'existe pas
+mysql -uroot -p"$MYSQL_ROOT_PASSWORD" -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;"
 
-# Vérifier si l'utilisateur existe et le créer si ce n'est pas le cas
-if ! mysql -uroot -e "SELECT 1 FROM mysql.user WHERE user = 'wordpress_user'"; then
-    mysql -uroot -e "CREATE USER 'wordpress_user'@'%' IDENTIFIED BY 'wordpress_password';"
-    mysql -uroot -e "GRANT ALL PRIVILEGES ON wordpress_db.* TO 'wordpress_user'@'%';"
-    mysql -uroot -e "FLUSH PRIVILEGES;"
-fi
+# Créer l'utilisateur s'il n'existe pas et lui accorder les privilèges
+mysql -uroot -p"$MYSQL_ROOT_PASSWORD" -e "CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
+mysql -uroot -p"$MYSQL_ROOT_PASSWORD" -e "GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';"
+mysql -uroot -p"$MYSQL_ROOT_PASSWORD" -e "FLUSH PRIVILEGES;"
 
-# Arrêter MariaDB
-mysqladmin shutdown -uroot
+echo "User done "
 
+# Shutdown MariaDB service
+echo "Shutting down MariaDB..."
+mysqladmin -u root -p${MYSQL_ROOT_PASSWORD} shutdown
+
+# Start MariaDB in safe mode
+echo "Starting MariaDB in safe mode..."
+exec mysqld_safe
