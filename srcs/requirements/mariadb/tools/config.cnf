@@ -4,7 +4,7 @@
 
 user                    = mysql
 pid-file                = /run/mysqld/mysqld.pid
-socket                  = /tmp/mysql.sock
+socket                  = /run/mysqld/mysqld.sock
 port                    = 3306
 basedir                 = /usr
 datadir                 = /var/lib/mysql

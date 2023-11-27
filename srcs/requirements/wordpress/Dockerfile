@@ -4,7 +4,8 @@ FROM debian:bullseye
 # Update & Install necessary packages for PHP & php-fpm
 RUN apt-get update && apt-get install -y \
     vim \
-    php7.4\
+    default-mysql-client \
+    php7.4 \
     php7.4-fpm \
     php7.4-mysql \
     php7.4-common \
@@ -13,7 +14,8 @@ RUN apt-get update && apt-get install -y \
     php7.4-xml \
     php7.4-mbstring \
     wget \
-    unzip 
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
 
 # Download and run WordPress
 ADD https://wordpress.org/latest.tar.gz /var/www/html/
@@ -26,6 +28,8 @@ RUN mkdir -p /run/php && chown www-data:www-data /run/php
 
 COPY ./tools/www.conf /etc/php/7.4/fpm/pool.d/www.conf
 
+COPY ./tools/init-wordpress.sh /usr/local/bin/init-wordpress.sh
+
 # Set the working directory
 WORKDIR /var/www/html/wordpress
 
@@ -33,4 +37,4 @@ WORKDIR /var/www/html/wordpress
 EXPOSE 9000
 
 # Start php-fpm
-CMD ["php-fpm7.4"]
+CMD ["bash", "/usr/local/bin/init-wordpress.sh"]
