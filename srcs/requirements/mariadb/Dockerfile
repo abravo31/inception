@@ -10,11 +10,13 @@ RUN apt-get update && \
 # Configurer MariaDB (facultatif)
 # Vous pouvez ajouter des commandes pour ajuster la configuration de MariaDB ici.
 # Par exemple, copier un fichier de configuration personnalisé
-COPY ./tools/config.cnf /etc/mysql/mariadb.conf.d/
+COPY ./tools/my.cnf /etc/mysql/my.cnf
 
 # Copier un script pour initialiser la base de données et les configurations
 COPY ./tools/init-db.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/init-db.sh
+
+EXPOSE 3306
 
 # Démarrer MariaDB
 CMD ["init-db.sh", "mysqld_safe"]

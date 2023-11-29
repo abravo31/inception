@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   wordpress:
-    container_name: wordpress_docker
+    container_name: wordpress
     build: 
       context: ./requirements/wordpress
       dockerfile: Dockerfile
@@ -26,7 +26,7 @@ services:
     build: 
       context: ./requirements/nginx
       dockerfile: Dockerfile
-    container_name: nginx_docker
+    container_name: nginx
     depends_on:
       - wordpress
     ports:
@@ -48,14 +48,14 @@ services:
       start_period: 5s
 
   mariadb:
-    container_name: mariadb_docker
+    container_name: mariadb
     build:
       context: ./requirements/mariadb
       dockerfile: Dockerfile
     volumes:
       - mariadb_data:/var/lib/mysql
-    expose:
-      - "3306"
+    # expose:
+      # - "3306"
     networks:
       - inception
     env_file:
@@ -78,18 +78,17 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      #device: /home/abravo/data/database
-      device: /home/amanda/data/database
+      device: /home/abravo/data/database
+      #device: /home/amanda/data/database
       o: bind
   wordpress_data:
     driver: local
     driver_opts:
       type: none
-      #device: /home/abravo/data/website
-      device: /home/amanda/data/website
+      device: /home/abravo/data/website
+      #device: /home/amanda/data/website
       o: bind
 
 networks:
   inception:
-    name: inception
     driver: bridge

@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y \
     php7.4-mbstring \
     wget \
     unzip \
+    telnet \
     && rm -rf /var/lib/apt/lists/*
 
 # Download and run WordPress

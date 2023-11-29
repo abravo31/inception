@@ -1,9 +1,9 @@
 #!/bin/bash
-
+set -x
 # Attendre que la base de données soit opérationnelle
-until mysqladmin ping -h"${DB_HOST}" --silent; do
+until mysqladmin ping -h"${DB_HOST}" -p$MYSQL_ROOT_PASSWORD; do
     echo "En attente de la base de données..."
-    sleep 2
+    sleep 1
 done
 
 # Définir le chemin de WordPress
