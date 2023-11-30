@@ -78,17 +78,18 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /home/abravo/data/database
-      #device: /home/amanda/data/database
+      #device: /home/abravo/data/database
+      device: /home/amanda/data/database
       o: bind
   wordpress_data:
     driver: local
     driver_opts:
       type: none
-      device: /home/abravo/data/website
-      #device: /home/amanda/data/website
+      #device: /home/abravo/data/website
+      device: /home/amanda/data/website
       o: bind
 
 networks:
   inception:
+    name: inception
     driver: bridge

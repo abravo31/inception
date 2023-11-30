@@ -34,10 +34,6 @@ if ! [ -f "${WP_PATH}/wp-config.php" ]; then
         --admin_email="${ADMIN_EMAIL}" \
         --path="${WP_PATH}"
     
-    wp user create --allow-root \
-        ${DB_NEW_USER} ${DB_NEW_USER_MAIL} \
-        --user_pass=${DB_NEW_USER_PASS} \
-    
 fi
 echo "End of configuration ..."
 
