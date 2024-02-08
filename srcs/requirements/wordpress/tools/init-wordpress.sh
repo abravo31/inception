@@ -34,7 +34,16 @@ if ! [ -f "${WP_PATH}/wp-config.php" ]; then
         --admin_email="${ADMIN_EMAIL}" \
         --path="${WP_PATH}"
     
+    wp user create ${WP_USER} ${WP_USER_EMAIL} \
+                    --user_pass=${WP_PASSWORD} \
+                    --role="author"            \
+                    --allow-root
+
+    wp theme install twentytwentythree --activate --path="${WP_PATH}" --allow-root
+    
 fi
+
+
 echo "End of configuration ..."
 
 # Lancer PHP-FPM

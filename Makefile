@@ -3,26 +3,27 @@ COMPOSE_FILE := srcs/docker-compose.yml
 all: ssl-gen build up
 
 build:
-	#mkdir -p /home/abravo/data/database
-	#mkdir -p /home/abravo/data/website
-	mkdir -p /home/amanda/data/database
-	mkdir -p /home/amanda/data/website
-	docker-compose -f $(COMPOSE_FILE) build
+	mkdir -p /home/abravo/data/database
+	mkdir -p /home/abravo/data/website
+	# mkdir -p /home/amanda/data/database
+	# mkdir -p /home/amanda/data/website
+	docker compose -f $(COMPOSE_FILE) build
 
 up:
-	docker-compose -f $(COMPOSE_FILE) up -d
+	docker compose -f $(COMPOSE_FILE) up -d
 
 down:
-	docker-compose -f $(COMPOSE_FILE) down
+	docker compose -f $(COMPOSE_FILE) down
 
 logs:
-	docker-compose -f $(COMPOSE_FILE) logs -f
+	docker compose -f $(COMPOSE_FILE) logs -f
 
 clean:
-	docker-compose -f $(COMPOSE_FILE) down -v
+	docker compose -f $(COMPOSE_FILE) down -v
 	yes | docker image prune
 	yes | docker container prune
-	docker image rm srcs-mariadb; docker image rm srcs-wordpress; docker image rm srcs-nginx; echo "done"
+	yes	| docker volume prune
+	docker image rm mariadb; docker image rm wordpress; docker image rm nginx; echo "done"
 	rm -rf /home/abravo/data/database
 	rm -rf /home/abravo/data/website
 
