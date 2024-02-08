@@ -24,8 +24,8 @@ clean:
 	yes | docker container prune
 	yes	| docker volume prune
 	docker image rm mariadb; docker image rm wordpress; docker image rm nginx; echo "done"
-	rm -rf /home/abravo/data/database
-	rm -rf /home/abravo/data/website
+	sudo rm -rf /home/abravo/data/database
+	sudo rm -rf /home/abravo/data/website
 
 
 ssl-gen:
